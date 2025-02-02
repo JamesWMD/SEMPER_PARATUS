@@ -39,7 +39,7 @@
                 <p class="login__text">¿No te has registrado? 
                     <a class="login__link" href="#">Regístrate</a>
                 </p>
-                <form class="login__form" action="UsuariosServlet" method="POST">
+                <form class="login__form" action="AccesoRegistroServlet" method="POST">
                     <!-- Campo oculto para especificar la acción -->
                     <input type="hidden" name="action" value="login">
                     
@@ -61,7 +61,7 @@
                     
                     
                     <button type="submit" class="login__button">Inicia Sesion</button>
-                         <%-- Mostrar mensaje de error si existe --%>
+                        <%-- Mostrar mensaje de error si existe --%>
                         <% String mensaje = (String) request.getAttribute("mensaje"); %>
                         <% if (mensaje != null) { %>
                         <div class="contenedor-mensaje">
@@ -83,7 +83,7 @@
                 </p>
                 <div>
                 </div>
-                <form class="registro__form" action="UsuariosServlet" method="POST">
+                <form class="registro__form" action="AccesoRegistroServlet" method="POST">
                     <!-- Campo oculto para especificar la acción -->
                     <input type="hidden" name="action" value="registro">
                     

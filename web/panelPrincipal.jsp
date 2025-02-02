@@ -4,9 +4,7 @@
     Author     : JAMES
 --%>
 
-<%@page import="java.util.Iterator"%>
-<%@page import="java.util.List"%>
-<%@page import="dao.UsuariosDAO"%>
+
 <%@page import="Modelos.Usuarios"%>
 <%@page import="javax.servlet.http.HttpSession" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -637,12 +635,12 @@
                     
                     <div class="form__field-usuario form__field--usuario-idUsuario">
                         <label for="noIdentificacion" class="form__label">Usuario</label>
-                        <input type="text" name="noIdentificacion" id="noIdentificacion" class="form__input form__input--idUsuario" value="${usuario != null ? usuario.getNoIdentificacion() : ''}">
+                        <input type="text" name="noIdentificacion" id="noIdentificacion" class="form__input form__input--idUsuario">
                     </div>
                     
                     <div class="form__field-usuario form__field--usuario-nombreUsuario">
                         <label for="nombreUsuario" class="form__label">Nombres Usuario</label>
-                        <input type="text" name="nombreUsuario" id="nombreUsuario" class="form__input form__input--nombreUsuario" value="${usuario != null ? usuario.getNombreUsuario() : ''}">
+                        <input type="text" name="nombreUsuario" id="nombreUsuario" class="form__input form__input--nombreUsuario">
                     </div>
                     
                     <div class="container__password">
@@ -652,14 +650,14 @@
                             <div class="form__field-usuario form__field--usuario-password">
                                 <label for="password" class="form__label">Contraseña</label>
                                 <div class="form__input-container">
-                                    <input type="password" name="password" id="password" class="form__input form__input--password" oninput="validatePasswords()" value="${usuario != null ? usuario.getPassword() : ''}">
+                                    <input type="password" name="password" id="password" class="form__input form__input--password" oninput="validatePasswords()">
                                 </div>
                             </div>
                                 
                             <div class="form__field-usuario form__field--usuario-repet_password">
                                 <label for="repet_password" class="form__label">Repetir Contraseña</label>
                                 <div class="form__input-container">
-                                    <input type="password" name="repet_password" id="repet_password" class="form__input form__input--repet_password" oninput="validatePasswords()" value="${usuario != null ? usuario.getPassword() : ''}">
+                                    <input type="password" name="repet_password" id="repet_password" class="form__input form__input--repet_password" oninput="validatePasswords()">
                                 </div>
                             </div>
                                 
@@ -667,7 +665,7 @@
                     </div>
                     <div class="containerBtnVer">
                         <label for="">Ver</label>
-                        <button type="submit" class="botonVer"  onclick="togglePassword(event)">
+                        <button type="button" class="botonVer"  onclick="togglePassword(event)">
                             <img src="IMG/ojo-cerrado (1).png" alt="Ver contraseña" class="form__icon">
                         </button>
                     </div>
@@ -683,35 +681,7 @@
                         
                 <h3 class="titulo__tabla titulo__tabla-usuarios">LISTA DE USUARIOS</h3>
 
-                <div class="tabla-contenedora-usuarios">
-                    <table class="tabla-usuarios" id="tabla-usuarios">
-                        <thead>
-                            <tr>
-                                <th class="tabla-usuarios-noIdentificacion">No. Identificacion</th>
-                                <th class="tabla-productos-nombre">Nombres y Apellidos</th>
-                                <th class="tabla-productos-password">Password</th>
-                                <th class="tabla-productos-estado">Estado.</th>
-                            </tr>
-                        </thead>
-                        <%
-                            UsuariosDAO dao = new UsuariosDAO();
-                            List<Usuarios>list = dao.listar();
-                            Iterator<Usuarios>iter=list.iterator();
-                            Usuarios user = null;
-                            while(iter.hasNext()){
-                                user = iter.next();
-                        %>
-                        <tbody>
-                            <tr>
-                                <td><%= user.getNoIdentificacion()%></td>
-                                <td><%= user.getNombreUsuario()%></td>
-                                <td><%= user.getPassword()%></td>
-                                <td><%= user.getEstado()%></td>
-                            </tr>
-                            <%}%>
-                        </tbody>
-                    </table>
-                </div>
+                
             </Section>
                         
             <!-- Campo oculto para la acción -->
