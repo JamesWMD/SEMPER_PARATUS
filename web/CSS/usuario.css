@@ -29,8 +29,8 @@
 
 .form__field-usuarios {
     height: 80px;
-    align-items: end;
-    padding-bottom: 10px;
+    display: flex;
+    justify-content: space-around;
 
 }
 .form__field-usuario{

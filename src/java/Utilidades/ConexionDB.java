@@ -58,7 +58,7 @@ public class ConexionDB {
     }
     
     // Método principal para pruebas
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         try (Connection connection = ConexionDB.getConnection()) {
             if (connection != null) {
                 System.out.println("La conexión está activa.");
@@ -67,6 +67,6 @@ public class ConexionDB {
             System.err.println("No se pudo establecer la conexión.");
             e.printStackTrace();
         }
-    }
+    }*/
     
 }

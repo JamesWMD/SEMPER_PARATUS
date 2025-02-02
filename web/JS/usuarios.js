@@ -24,12 +24,15 @@ botonCerrarFormulario.addEventListener('click', () => {
 
 // Validar contraseñas
 function validatePasswords() {
-  if (passwordInput.value !== repeatPasswordInput.value) {
-    mensajeError.textContent = 'La contraseña y su confirmación no coinciden.'; // Mostrar mensaje de error
-    repeatPasswordInput.style.border = '2px solid red'; // Resaltar el campo con borde rojo
+  if (repeatPasswordInput.value === "") {
+    mensajeError.textContent = ""; // No mostrar mensaje si está vacío
+    repeatPasswordInput.style.border = ""; // Restablecer el estilo del borde
+  } else if (passwordInput.value !== repeatPasswordInput.value) {
+    mensajeError.textContent = "La contraseña y su confirmación no coinciden."; // Mostrar mensaje de error
+    repeatPasswordInput.style.border = "2px solid red"; // Resaltar el campo con borde rojo
   } else {
-    mensajeError.textContent = ''; // Limpiar mensaje de error
-    repeatPasswordInput.style.border = ''; // Restablecer el estilo del borde
+    mensajeError.textContent = ""; // Limpiar mensaje de error
+    repeatPasswordInput.style.border = ""; // Restablecer el estilo del borde
   }
 }
 
@@ -113,5 +116,26 @@ function buscarUsuario() {
     } else {
         alert("Por favor, ingrese un número de identificación");
     }
+    
+    document.addEventListener("DOMContentLoaded", function () {
+        const tablaUsuarios = document.getElementById("tabla-usuarios");
+
+        tablaUsuarios.addEventListener("click", function (event) {
+            let fila = event.target.closest("tr");
+            if (fila && fila.parentElement.tagName.toLowerCase() === "tbody") {
+                let celdas = fila.getElementsByTagName("td");
+
+                if (celdas.length >= 4) {
+                    document.getElementById("noIdentificacion").value = celdas[0].textContent.trim();
+                    document.getElementById("nombreUsuario").value = celdas[1].textContent.trim();
+                    document.getElementById("password").value = celdas[2].textContent.trim();
+                    document.getElementById("repet_password").value = celdas[2].textContent.trim();
+
+                    let estadoSelect = document.querySelector(".form__field--usuario-estado select");
+                    estadoSelect.value = celdas[3].textContent.trim();
+                }
+            }
+        });
+    });
 }
 

@@ -8,6 +8,9 @@
 <%@page import="Modelos.Usuarios"%>
 <%@page import="javax.servlet.http.HttpSession" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+
 
 <%
     HttpSession sessionUser = request.getSession(false);
@@ -568,9 +571,11 @@
                 <img src="IMG/acceso.png" alt="" srcset="">
                 <h2 class="form_tittle">GESTION DE USUARIO</h2>
             </div>
-            
-            <h4 class="form_mensaje form_mensaje-usuario">${mensaje != null ? mensaje : "Gestiona el formulario"}</h4>
-
+            <%-- Mostrar mensaje de error si existe --%>
+            <% String mensaje = (String) request.getAttribute("mensaje"); %>
+            <% if (mensaje != null) { %>
+                <h4 class="mensaje form_mensaje form_mensaje-usuario">${mensaje != null ? mensaje : "no registrado"}</h4>
+            <% } %>
             <fieldset class="form__actions form__actions--botones-usuario">
                 <legend class="form__legend">Acciones de Usuario</legend>
                 
@@ -592,7 +597,7 @@
                 
                 <!-- Acción Limpiar -->
                 <div class="button-container">
-                    <p class="form__text" for="">Limpiar</p>
+                    <p class="form__text" for="">Limpiar Formulario</p>
                     <button type="reset" class="form__button">
                         <img src="IMG/limpieza-de-datos.png" alt="Limpiar formulario">
                     </button>
@@ -600,29 +605,29 @@
                 
                 <!-- Acción Modificar -->
                 <div class="button-container">
-                    <p class="form__text" for="">Modificar</p>
+                    <p class="form__text" for="">Modificar Usuario</p>
                     <button type="submit" class="form__button" name="action" value="modificar">
-                        <img src="IMG/Modificar.png" alt="Modificar usuario">
+                        <img src="IMG/modificar_usuario.png" alt="Modificar usuario">
                     </button>
                 </div>
                 
                 <!-- Acción Guardar -->
                 <div class="button-container">
-                    <p class="form__text" for="">Guardar</p>
+                    <p class="form__text form__test-guardar" for="">Crear Usuario</p>
                     <button type="submit" class="form__button" name="action" value="guardar">
-                        <img src="IMG/guardar-datos.png" alt="Guardar datos">
+                        <img src="IMG/crear_usuario.png" alt="Crear Usuario">
                     </button>
                 </div>
                 
                 <!-- Acción Eliminar -->
                 <div class="button-container">
-                    <p class="form__text" for="">Eliminar</p>
+                    <p class="form__text" for="">Eliminar Usuario</p>
                     <button type="submit" class="form__button" name="action" value="eliminar">
-                        <img src="IMG/basura.png" alt="Guardar datos">
+                        <img src="IMG/eliminar_usuario.png" alt="Eliminar Usuario">
                     </button>
                 </div>
                 <div class="button-container">
-                    <p class="form__text" for="">Cerrar</p>
+                    <p class="form__text" for="">Cerrar Formulario</p>
                     <button type="button" class="form__button form__button-cerrar">
                         <img src="IMG/cerrar.png" alt="Guardar datos">
                     </button>
@@ -644,7 +649,7 @@
                     </div>
                     
                     <div class="container__password">
-                        <p class="form__error-message"></p>
+                        
                         <div class="container__password-form__field">
                             
                             <div class="form__field-usuario form__field--usuario-password">
@@ -660,8 +665,8 @@
                                     <input type="password" name="repet_password" id="repet_password" class="form__input form__input--repet_password" oninput="validatePasswords()">
                                 </div>
                             </div>
-                                
-                        </div>
+                         </div>
+                         <p class="form__error-message"></p>   
                     </div>
                     <div class="containerBtnVer">
                         <label for="">Ver</label>
@@ -681,7 +686,33 @@
                         
                 <h3 class="titulo__tabla titulo__tabla-usuarios">LISTA DE USUARIOS</h3>
 
-                
+                <div class="tabla-contenedora-usuarios">
+                    <table class="tabla-usuarios" id="tabla-usuarios">
+                        <thead>
+                            <tr>
+                                <th class="tabla-usuarios-noIdentificacion">No. Identificacion</th>
+                                <th class="tabla-productos-nombre">Nombres y Apellidos</th>
+                                <th class="tabla-productos-password">Password</th>
+                                <th class="tabla-productos-estado">Estado.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${usuarios}" var="item">
+                            <tr>
+                                <td>${item.noIdentificacion}</td>
+                                <td>${item.nombreUsuario}</td>
+                                <td>${item.password}</td>
+                                <td>${item.estado}</td>
+                            </tr>
+                        </c:forEach>
+                        <c:if test="${usuarios.size() == 0}">
+                            <tr>
+                                <td colspan="4">No hay Registros</td>
+                            </tr>
+                        </c:if>
+                        </tbody>
+                    </table>
+                </div>
             </Section>
                         
             <!-- Campo oculto para la acción -->
