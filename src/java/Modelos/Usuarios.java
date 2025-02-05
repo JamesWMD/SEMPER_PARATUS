@@ -6,15 +6,6 @@ public class Usuarios {
     private String nombreUsuario;
     private String password;
     private String estado;
-    private String repetPassword;
-
-    public String getRepetPassword() {
-        return repetPassword;
-    }
-
-    public void setRepetPassword(String repetPassword) {
-        this.repetPassword = repetPassword;
-    }
 
     public Usuarios() {
     }

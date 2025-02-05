@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.sql.*;
 
 /**
  *
@@ -97,5 +98,117 @@ public class UsuariosDAO {
         
         return result;
     }
+    
+    public Usuarios buscarUsuario(String noIdentificacion){
+        Usuarios obj = null;
+        
+        
+        // Se cre la conexion dentro de un try-catch
+        try{
+            cn = ConexionDB.getConnection(); // se invoca la clase ConexionDB y su metodo getConnection()
+            String sql = "SELECT * FROM usuarios WHERE noIdentificacion = ?"; // La sentencia SQL para traer toota la tabla Usuarios
+            ps = cn.prepareStatement(sql); // Prepara la sentencia SQL
+            ps.setString(1, noIdentificacion);
+            rs = ps.executeQuery();
+            
+            
+            if(rs.next()){ 
+                obj = new Usuarios(); // Por cada iteracion se va crear una nueva clase tipo Usuarios
+                obj.setNoIdentificacion(rs.getString("noIdentificacion"));
+                obj.setNombreUsuario(rs.getString("nombreUsuario"));
+                obj.setPassword(rs.getString("Password"));
+                obj.setEstado(rs.getString("estado"));
+            }
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }finally{ // Cerramos la conexion
+            try{
+                if(cn != null){
+                    cn.close();
+                }
+                if(rs != null){
+                    rs.close();
+                }
+                if(ps != null){
+                    ps.close();
+                }
+                
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        
+        return obj;
+    }
+    
+    public int editarUsuario(Usuarios obj){
+        int result = 0;
+        
+        try{
+            cn = ConexionDB.getConnection(); // se invoca la clase ConexionDB y su metodo getConnection()
+            String sql = "UPDATE usuarios SET nombreUsuario=?, password=?, estado=?" + " WHERE noIdentificacion=?"; // La sentencia SQL para EDITAR un usuario
+            
+            ps = cn.prepareStatement(sql); // Prepara la sentencia SQL
+        
+            ps.setString(1,obj.getNombreUsuario());
+            ps.setString(2,obj.getPassword());
+            ps.setString(3,obj.getEstado());
+            ps.setString(4,obj.getNoIdentificacion());
+            result = ps.executeUpdate();   
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }finally{ // Cerramos la conexion
+            try{
+                if(cn != null){
+                    cn.close();
+                }
+                if(ps != null){
+                    ps.close();
+                }
+                
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        
+        return result;
+    }
+    
+    public int eliminarUsuario(String noIdentificacion){
+        int result = 0;
+        
+        try{
+            cn = ConexionDB.getConnection(); // se invoca la clase ConexionDB y su metodo getConnection()
+            String sql = "DELETE FROM usuarios WHERE noIdentificacion = ?"; // La sentencia SQL para EDITAR un usuario
+            
+            ps = cn.prepareStatement(sql); // Prepara la sentencia SQL
+      
+            ps.setString(1, noIdentificacion);
+            result = ps.executeUpdate();   
+            
+        }catch(Exception ex){
+            ex.printStackTrace();
+        }finally{ // Cerramos la conexion
+            try{
+                if(cn != null){
+                    cn.close();
+                }
+                if(ps != null){
+                    ps.close();
+                }
+                
+            }catch(Exception ex){
+                ex.printStackTrace();
+            }
+        }
+        
+        return result;
+    }
+    //===================================================================================================
+   
 
 }
+
+

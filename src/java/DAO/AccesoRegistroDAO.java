@@ -18,17 +18,17 @@ import java.sql.SQLException;
 public class AccesoRegistroDAO {
     
     //Método para guardar un nuevo usuario en la BD
-    public void guardar(Usuarios usuario) {
+    public void guardar(Usuarios vusuario) {
         String sql = "INSERT INTO usuarios (noIdentificacion, nombreUsuario, password, estado) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = ConexionDB.getConexion();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             // Establece los valores para cada columna de la tabla
-            stmt.setString(1, usuario.getNoIdentificacion());  // Asumiendo que 'getNoIdentificacion' es el método correspondiente
-            stmt.setString(2, usuario.getNombreUsuario());  // Método para obtener el nombre del usuario
-            stmt.setString(3, usuario.getPassword());  // Método para obtener la contraseña
-            stmt.setString(4, usuario.getEstado());  // Método para obtener el estado ('Activo' o 'Inactivo')
+            stmt.setString(1, vusuario.getNoIdentificacion());  // Asumiendo que 'getNoIdentificacion' es el método correspondiente
+            stmt.setString(2, vusuario.getNombreUsuario());  // Método para obtener el nombre del usuario
+            stmt.setString(3, vusuario.getPassword());  // Método para obtener la contraseña
+            stmt.setString(4, vusuario.getEstado());  // Método para obtener el estado ('Activo' o 'Inactivo')
 
             // Ejecuta la inserción
             stmt.executeUpdate();

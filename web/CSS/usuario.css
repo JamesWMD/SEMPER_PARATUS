@@ -37,7 +37,6 @@
     display: flex;
     flex-direction: column;
     text-align: center;
-    
 }
 .form__field--usuario-nombreUsuario {
     width: 300px;
@@ -72,7 +71,6 @@
     width: 100px;
 }
 
-
 .botonVer {
     border-radius: 40%;
     width: 20px;
@@ -85,25 +83,16 @@
     align-items: end;
 }
 
-.contenedor-mensaje{
-    border: 1px solid red;
-    background: #fa7070;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-    height: 20px;
-    border-radius: 10px;
-}
-
 .container__fields-table {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
+
+
 .tabla-contenedora-usuarios {
-    max-height: 140px; /* Define la altura máxima para la tabla */
+    max-height: 350px; /* Define la altura máxima para la tabla */
     overflow-y: auto; /* Permite el desplazamiento vertical */
     
 }
@@ -113,7 +102,7 @@
 }
 
 .tabla-usuarios {
-    width: 50%; /* Asegura que la tabla ocupe todo el ancho disponible */
+    width: 100%; /* Asegura que la tabla ocupe todo el ancho disponible */
     border-collapse: collapse; /* Elimina los espacios entre las celdas */
     margin: auto;
 }
@@ -123,8 +112,11 @@
     text-align: center;
     border: 1px solid #ccc;
     padding: 2px 5px;
-    height: 10px;
+    height: 25px;
     font-size: 12px;
+}
+.tabla-usuarios td {
+    background-color: #fff;
 }
 
 .tabla-usuarios thead th {
@@ -135,8 +127,49 @@
     
 }
 
-.tabla-usuario-nombre {
+.tabla-usuario-nombreUsuario {
     max-width: 300px;
 }
+
+.tabla__button{
+    background: none; /* Sin fondo */
+    border: none; /* Sin bordes */
+    padding: 0; /* Sin relleno */
+    margin: 0; /* Sin márgenes */
+    cursor: pointer; /* Cambiar a cursor de enlace */
+    display: inline-block; /* Asegura que respete el tamaño de la imagen */
+}
+.icon_button-tabla{
+    width: 15px;
+}
+
+.tabla-usuario-selecionar, 
+.tabla-usuario-eliminar, 
+.tabla-usuario-estado{
+    width: 60px;
+}
+
+.tabla-usuario-noIdentificacion{
+    width: 120px;
+}
+
+.container__tabla-listaUsuarios{
+    background-color: #f8efe4;
+    max-width: 1000px;
+    max-height: 700px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid;
+    margin: auto;
+    margin-top: 10px;
+}
+
+.container__tabla-listaUsuarios{
+    background-color: #ooo;
+}
+
 
 

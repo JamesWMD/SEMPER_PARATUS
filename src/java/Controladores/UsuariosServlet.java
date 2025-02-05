@@ -15,7 +15,16 @@ import javax.servlet.http.HttpServletResponse;
 public class UsuariosServlet extends HttpServlet {
 
     private UsuariosDAO userDao = new UsuariosDAO();
-    private final String pagListar = "panelPrincipal.jsp"; // pagina donde se va mostrar la lista de usuarios.
+    private final String pagListar = "listarUsuarios.jsp"; // pagina donde se va mostrar la lista de usuarios.
+    private final String formUser = "gestionUsuario.jsp"; // pagina donde se va mostrar la lista de usuarios.
+    
+    
+    private static final long serialVersionUID = 1L;
+    private UsuariosDAO usuariosDAO;
+
+    public void init() {
+        usuariosDAO = new UsuariosDAO();
+    }
    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -33,11 +42,25 @@ public class UsuariosServlet extends HttpServlet {
             case "guardar":
                 guardar(request, response);
                 break;
+            case "buscar":
+                buscar(request, response);
+                break;
+            case "seleccionar":
+                seleccionar(request, response);
+                break;
+            case "modificar":
+                modificar(request, response);
+                break;
+            case "eliminar":
+                eliminar(request, response);
+                break;
+            
             default:
                 throw new AssertionError();
         }
     }
     
+    /* ============================= LISTAR USUARIOS ==========================*/
     protected void listar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -47,15 +70,16 @@ public class UsuariosServlet extends HttpServlet {
 
     }
     
+    /*===============================NUEVO USUARIOS==============================*/
     protected void nuevo(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
 
         request.setAttribute("usuarios", new Usuarios());
-        request.getRequestDispatcher(pagListar).forward(request, response);
+        request.getRequestDispatcher(formUser).forward(request, response);
 
     }
     
+    /* ============================= GUARDAR USUARIOS ==========================*/
     private void guardar(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -87,15 +111,130 @@ public class UsuariosServlet extends HttpServlet {
         int result = userDao.registrarUsuario(obj);
 
         if (result > 0) {
-            request.setAttribute("form_mensaje-usuario", "USUARIO REGISTRADO CORRECTAMENTE");
+            request.setAttribute("mensaje", "USUARIO REGISTRADO CORRECTAMENTE");
         } else {
-            request.setAttribute("form_mensaje-usuario", "ERROR: USUARIO NO REGISTRADO");
+            request.setAttribute("mensaje", "ERROR: USUARIO NO REGISTRADO");
             request.setAttribute("usuarios", obj); // Devolver datos en caso de error
         }
-
+        request.setAttribute("usuarios", userDao.ListarTodosUsuario());
         request.getRequestDispatcher(pagListar).forward(request, response);
     }
+    
+    /* ============================= EDITAR USUARIOS ==========================*/
+    private void seleccionar(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
+        String noIdentificacion = request.getParameter("noIdentificacion");
+
+        Usuarios obj = userDao.buscarUsuario(noIdentificacion);
+
+        if (obj != null) {
+            request.setAttribute("usuario", obj); // Clave correcta en el JSP
+            request.getRequestDispatcher(formUser).forward(request, response);
+        } else {
+            request.getSession().setAttribute("error", "No se encontro usuario con No. Identificacion " + noIdentificacion);
+            response.sendRedirect("UsuariosServlet?action=listar");
+        }
+
+    }
+    
+    /* ============================= BUSCAR USUARIOS ==========================*/
+    private void buscar(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String noIdentificacion = request.getParameter("noIdentificacion");
+
+        if (noIdentificacion == null || noIdentificacion.trim().isEmpty()) {
+            request.setAttribute("mensaje", "Debe ingresar un número de identificación.");
+            request.getRequestDispatcher(formUser).forward(request, response);
+            return;
+        }
+
+        Usuarios usuario = userDao.buscarUsuario(noIdentificacion);
+
+        if (usuario != null) {
+            request.setAttribute("usuario", usuario);
+            request.setAttribute("mensaje", "Usuario encontrado.");
+        } else {
+            request.setAttribute("mensaje", "Usuario no encontrado.");
+        }
+
+        request.getRequestDispatcher(formUser).forward(request, response);
+    }
+    
+    private void modificar(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // Obtener valores del formulario
+        String noIdentificacion = request.getParameter("noIdentificacion");
+        String nombreUsuario = request.getParameter("nombreUsuario");
+        String password = request.getParameter("password");
+        String estado = request.getParameter("estado");
+
+        // Validar que no sean nulos o vacíos
+        if (noIdentificacion == null || noIdentificacion.trim().isEmpty()
+                || nombreUsuario == null || nombreUsuario.trim().isEmpty()
+                || password == null || password.trim().isEmpty()
+                || estado == null || estado.trim().isEmpty()) {
+
+            request.setAttribute("mensaje", "Todos los campos son obligatorios");
+            request.getRequestDispatcher(pagListar).forward(request, response);
+            return; // Detener ejecución
+        }
+
+        // Crear objeto usuario
+        Usuarios obj = new Usuarios();
+        obj.setNoIdentificacion(noIdentificacion.trim());
+        obj.setNombreUsuario(nombreUsuario.trim());
+        obj.setPassword(password.trim());
+        obj.setEstado(estado.trim()); // Estado ya se obtiene del select
+
+        // Guardar usuario
+        int result = userDao.editarUsuario(obj);
+
+        if (result > 0) {
+            request.getSession().setAttribute("success", "El usuario con No. Identificacion " + noIdentificacion + " fue modificado Exitosamente");
+        } else {
+            request.getSession().setAttribute("error", "No se encontro usuario con No. Identificacion " + noIdentificacion);
+            request.setAttribute("usuarios", obj); // Devolver datos en caso de error
+        }
+        request.setAttribute("usuarios", userDao.ListarTodosUsuario());
+        request.getRequestDispatcher(pagListar).forward(request, response);
+    }
+    
+    private void eliminar(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        // Obtener valores del formulario
+        String noIdentificacion = request.getParameter("noIdentificacion");
+
+        // Validar que no sean nulos o vacíos
+        if (noIdentificacion == null || noIdentificacion.trim().isEmpty()) {
+
+            request.setAttribute("mensaje", "Todos los campos son obligatorios");
+            request.getRequestDispatcher(pagListar).forward(request, response);
+            return; // Detener ejecución
+        }
+
+        // Crear objeto usuario
+        Usuarios obj = new Usuarios();
+        obj.setNoIdentificacion(noIdentificacion.trim());
+        // Guardar usuario
+        int result = userDao.eliminarUsuario(noIdentificacion);
+
+        if (result > 0) {
+            request.getSession().setAttribute("success", "El usuario con No. Identificacion " + noIdentificacion + " fue eliminado Exitosamente");
+        } else {
+            request.getSession().setAttribute("error", "No se pudo eliminar el usuario con No. Identificacion " + noIdentificacion);
+        }
+        request.setAttribute("usuarios", userDao.ListarTodosUsuario());
+        request.getRequestDispatcher(pagListar).forward(request, response);
+        
+    }
+    
+    //==========================================================
+    
+    
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -134,5 +273,7 @@ public class UsuariosServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    
 
 }
