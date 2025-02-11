@@ -41,7 +41,7 @@
                 <p class="login__text">¿No te has registrado? 
                     <a class="login__link" href="#">Regístrate</a>
                 </p>
-                <form class="login__form" action="AccesoRegistroServlet" method="POST">
+                <form class="login__form" action="AccesoRegistroServlet" method="POST" autocomplete="off">
                     <!-- Campo oculto para especificar la acción -->
                     <input type="hidden" name="action" value="login">
                     
@@ -85,7 +85,7 @@
                 </p>
                 <div>
                 </div>
-                <form class="registro__form" action="AccesoRegistroServlet" method="POST">
+                <form class="registro__form" action="AccesoRegistroServlet" method="POST" autocomplete="off">
                     <!-- Campo oculto para especificar la acción -->
                     <input type="hidden" name="action" value="registro">
                     
